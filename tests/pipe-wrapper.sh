@@ -11,8 +11,6 @@
 #
 # To regenerate all output files, use "make check TESTGEN=1"
 
-set -ex
-
 base="$1"
 if [[ "$base" != *.pipe ]]; then
 	echo "Invalid test file: $base"
@@ -38,7 +36,13 @@ if [ "$TESTGEN" = "1" ]; then
 	echo "$out" > ${base}.ref
 else
 	ref=`cat ${base}.ref`
-	[ "$out" != "$ref" ] && exit 1
+	if [[ "$out" != "$ref" ]]; then
+        cat ${base}.pipe
+        echo ""
+        echo "Expected: ${out}"
+        echo "Actual  : ${ref}"
+        exit 1
+    fi
 fi
 
 exit 0

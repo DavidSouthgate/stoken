@@ -8,29 +8,47 @@ tokens.  The project includes several components:
  * A GTK+ GUI with cut&amp;paste functionality
  * A shared library allowing other software to generate tokencodes on demand
 
-## Building on Linux
+ This **fork** primarily targets changing the build system to use CMake and including dependency sources as submodules to
+ allow for builds targetting any platform.
 
+## Building
+
+### Submodules
+The project must be cloned with submodules.
+
+To clone with submodules:
+```
+git clone --recurse-submodules -j8 git@github.com:DavidSouthgate/stoken.git
+```
+
+To initialise submodules if not done so when cloned:
+```
+git submodule update --init --recursive
+```
 ### Dependencies
 
- * libtomcrypt or nettle
+ * libtomcrypt & libtommath (included as submodules)
  * libxml2
  * libgtk3.0 (required for stoken-gui only)
 
-If you are building from Git, you'll need to install autoconf / automake /
-libtool, and run autogen.sh first.  This is not necessary if building from
-a released source tarball.
+The following are also required for building:
 
-On Debian or Ubuntu, this should satisfy most/all dependencies:
-
-    sudo apt-get install libgtk-3-dev libtomcrypt-dev libxml2-dev autoconf automake libtool build-essential
+ * cmake
+ * make
 
 ### Compile instructions
 
-    ./autogen.sh  # from Git only; not necessary if building from tarball
-    ./configure
-    make
-    make check
-    make install
+To build CLI:
+```
+cmake .
+make
+```
+
+To build as library:
+```
+cmake -DLIBSTOKEN=1 -DCLISTOKEN=0 .
+make
+```
 
 ## Usage
 
@@ -74,76 +92,10 @@ interface (libstoken) to generate tokencodes from other applications.
   <td><img src="misc/screenshot-1.png">
 </table>
 
-## Building on other platforms
-
-### Mac OS X
-
-#### Initial setup
-
-The following configuration was tested under Mavericks 10.9.5; other
-variants may work too:
-
- * Install gcc/make/headers: <code>xcode-select --install</code>
- * Install [Homebrew](http://brew.sh/)
- * Install [XQuartz](http://xquartz.macosforge.org/) to support GTK+3
- * Use Homebrew to satisfy dependencies: <code>brew install git autoconf
-   automake libtool nettle pkg-config gtk+3 gnome-icon-theme
-   hicolor-icon-theme</code>
- * Use OSX's builtin libxml2 (no action needed)
-
-#### Compiling
-
-Note that GNU libtool is called <code>glibtool</code> to avoid collisions
-with Apple's libtool program:
-
-    export LIBTOOL=glibtool
-    git clone git://github.com/cernekee/stoken
-    cd stoken
-    bash autogen.sh
-    ./configure
-    make
-    make check
-    make install
-
-### Experimental Windows build
-
-As of v0.8, stoken can be built for Windows using the [MinGW cross toolchain
-on Fedora](http://fedoraproject.org/wiki/MinGW).  This is not tested
-or maintained regularly.
-
-#### Initial setup
-
-On a Fedora 20 PC (other versions may work as well), install the build
-dependencies:
-
-    yum groupinstall "Development Tools"
-    yum install git autoconf automake libtool mingw32-gnutls mingw32-libxml2 mingw32-gtk3
-
-#### Compiling
-
-    git clone git://github.com/cernekee/stoken
-    cd stoken
-    bash autogen.sh
-    mingw32-configure
-    make winpkg
-
-If all goes well, you should be able to copy <code>winpkg.zip</code> to
-a Windows PC and run <code>stoken.exe</code> or <code>stoken-gui.exe</code>.
-
-#### TODO
-
-Several items are known to be missing or broken on the Windows build:
-
- * Default home directory is probably incorrect
- * No installer
- * The GUI requires its assets to be in the current directory
- * Password entry is not masked
- * <code>stoken --random</code> flag
- * No charset translation on filenames
-
 ## Misc
 
-Author: Kevin Cernekee &lt;cernekee@gmail.com&gt;
+Fork Author: David Southgate &lt;d@davidsouthgate.co.uk&gt;
+Original Author: Kevin Cernekee &lt;cernekee@gmail.com&gt;
 
 License: LGPLv2.1+
 

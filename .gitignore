@@ -2,7 +2,6 @@
 Makefile
 Makefile.in
 aclocal.m4
-config.h
 config.h.in
 config.log
 config.status
@@ -39,3 +38,10 @@ tmp.debian
 winpkg/
 winpkg.zip
 *.exe
+
+# CMake
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+**/*.a
+
